@@ -1,24 +1,10 @@
 import React from 'react';
 import TodoItem from './TodoItem';
+import {useTodoState} from "@/contexts/TodosContext";
 
 function TodoList () {
-    const todos = [
-        {
-          id: 1,
-          text: 'Context Api 배우기',
-          done: true,
-        },
-        {
-            id: 2,
-            text: 'TypeScript 마스터하기',
-            done: true,
-        },
-        {
-            id: 3,
-            text: 'TypeScript와 Context Api 적용해보기',
-            done: false,
-        },
-    ];
+
+    const todos = useTodoState();
 
     return (
         <ul>
