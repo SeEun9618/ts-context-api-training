@@ -1,4 +1,4 @@
-import {createContext, Dispatch} from "react";
+import React, {createContext, Dispatch, useReducer, useContext} from "react";
 
 export type Todo = {
     id: number;
@@ -36,4 +36,45 @@ function todosReducer (state: TodosState, action: Action): TodosState {
         default:
             throw new Error('Unhandled action');
     }
+}
+
+
+export function TodosContextProvider({ children }: { children: React.ReactNode }) {
+    const [todos, dispatch] = useReducer(todosReducer, [
+        {
+            id: 1,
+            text: 'Context Api 배우기',
+            done: true
+        },
+        {
+            id: 2,
+            text: 'TypeScript 마스터하기',
+            done: true
+        },
+        {
+            id: 3,
+            text: 'TypeScript 와 Context Api 적용해보기',
+            done: false
+        }
+    ]);
+
+    return (
+        <TodosDispatchContext.Provider value={dispatch}>
+            <TodosStateContext.Provider value={todos}>
+                {children}
+            </TodosStateContext.Provider>
+        </TodosDispatchContext.Provider>
+    );
+}
+
+export function useTodoState() {
+    const state = useContext(TodosStateContext);
+    if(!state) throw new Error('TodosProvider nof found');
+    return state;
+}
+
+export function useTodosDispatch() {
+    const dispatch = useContext(TodosDispatchContext);
+    if(!dispatch) throw new Error('TodosProvider not found');
+    return dispatch;
 }
